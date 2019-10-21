@@ -1,4 +1,3 @@
-import { resolve } from "path";
 
 // Create array 1000 element
 var arr = []
@@ -45,30 +44,38 @@ for (let i=0; i<1000; i++){
 // work();
 
 // Xu ly toan bo giao dich
-async function success(){
-    
-}
-
-function process(n){
-    return new Promise((resolve, reject)=>{
-            setTimeout(()=>{
-                if(n<0||n>arr.length){
-                    reject("ERROR")
-                }
-                else{
-                    resolve("Da xu ly xong giao dich "+n)
-                }
-            }, Math.floor(Math.random()*901)+1)
-            n++
+let process = (id) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(()=>{
+            resolve(id)
+        }, Math.floor(Math.random()*901)+100)
     })
 }
-for (let n=0; n<arr.length; n++){
-    try{
-        let process = await process(n)
-        console.log(process)
-        if (n=arr.length-1) console.log("DONE")
-    }
-    catch(err){
-        console.log(err)
+let processAll = async (id) => {
+    let i = await process(id)
+    console.log("Da xu ly xong "+ i)
+}
+async function all(arr){
+    let array = arr.shift()
+    await processAll(array)
+
+    if (arr.length != 0){
+        await all(arr)
     }
 }
+all(arr).then(()=>console.log("DONE"))
+
+// Xy ly 2 giao dich cung thoi diem
+function dual(arr){
+    Promise.all([all(arr), all(arr)]).then(()=> console.log("DONE"))
+}
+
+// Xu ly n giao dich cung thoi diem
+function allProcess(arr, n){
+    arr_list = []
+    for (let i=0; i<n; i++){
+        arr_list.push(all(arr))
+    }
+    Promise.all(arr_list).then(()=>console.log("DONE"))
+}
+allProcess(arr, 5)
