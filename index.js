@@ -43,7 +43,7 @@ for (let i=0; i<1000; i++){
 // }
 // work();
 
-// Xu ly toan bo giao dich
+// Process all
 let process = (id) => {
     return new Promise((resolve, reject) => {
         setTimeout(()=>{
@@ -65,12 +65,12 @@ async function all(arr){
 }
 all(arr).then(()=>console.log("DONE"))
 
-// Xy ly 2 giao dich cung thoi diem
+// Process dual
 function dual(arr){
     Promise.all([all(arr), all(arr)]).then(()=> console.log("DONE"))
 }
 
-// Xu ly n giao dich cung thoi diem
+// Process n in one moment
 function allProcess(arr, n){
     arr_list = []
     for (let i=0; i<n; i++){
